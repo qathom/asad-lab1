@@ -2,8 +2,8 @@
 
 ## Frontend
 
-Go to the [frontend README](https://github.com/qathom/asad-lab1/frontend/README.md).
+Go to the [frontend README](https://github.com/qathom/asad-lab1/tree/master/frontend).
 
 ## Backend
 
-Go to the [backend README](https://github.com/qathom/asad-lab1/README.md).
+Go to the [backend README](https://github.com/qathom/asad-lab1/tree/master/backend).
