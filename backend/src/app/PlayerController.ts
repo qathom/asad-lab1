@@ -1,11 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
-import { PlayerService } from './player.service';
+import { PlayerService } from './PlayerService';
 
-@Controller()
 export class PlayerController {
   constructor(private readonly service: PlayerService) {}
 
-  @Get()
   index() {
     return this.service.getPlayers();
   }
