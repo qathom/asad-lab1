@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 # compiled output
 /node_modules
+=======
+node_modules/
+.DS_Store
+>>>>>>> 8aa8b5f00d18d4612631b981fa5f338fa622efd0
