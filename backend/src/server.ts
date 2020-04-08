@@ -1,20 +1,40 @@
-import Hexnut from 'hexnut';
-import handle from 'hexnut-handle';
+import * as express from 'express';
+import * as socketio from 'socket.io';
+import * as path from 'path';
+import { Request, Response } from 'express';
 
-const port = 8181;
-const app = new Hexnut({ port });
+const app = express();
+app.set('port', process.env.PORT || 3000);
 
-app.use(handle.connect(ctx => {
-  ctx.messageCount = 0;
-  ctx.send('You are connected!');
-}));
+let http = require('http').Server(app);
 
-app.use(handle.message(ctx => {
-  ctx.messageCount += 1;
-  ctx.send(`You send a message: ${ctx.message}`);
-  ctx.send(`It was message number: ${ctx.messageCount}`);
-}));
+// Set up socket.io and bind it to our http server
+let io = require('socket.io')(http);
 
-app.start();
+// Serve frontend
+app.get('/', (_req: Request, res: Response) => {
+  res.sendFile(path.resolve('../frontend/index.html'));
+});
 
-console.log('Running on port:', port);
+// Static assets such as app.js
+app.use(express.static(path.resolve('../frontend')));
+
+/*
+ * Whenever a user connects on port 3000 via
+ * a websocket, log that a user has connected
+ */
+io.on('connection', (socket: any) => {
+  console.log('a user connected');
+
+  socket.on('message', (message: any) => {
+    console.log(message);
+
+    // echo the message back down the websocket connection
+    socket.emit('message', `Well received: ${message}`);
+  });
+});
+
+// Listen to port 3000
+const server = http.listen(3000, () => {
+  console.log('listening on *:3000');
+});

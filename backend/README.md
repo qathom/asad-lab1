@@ -1,34 +1,22 @@
 # Backend
 
+> TypeScript based Express.js server 
+
 ## Installation
 
 ```bash
 $ npm install
-$ cp .env.example .env
 ```
 
-## Running the app
+## Usage
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# Development mode
 $ npm run start:dev
 
-# production mode
+# Build (from TypeScript to JavaScript)
+$ npm run build
+
+# Production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
