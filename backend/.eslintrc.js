@@ -6,15 +6,13 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
+    'eslint-config-airbnb-base',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'prettier/@typescript-eslint',
   ],
   root: true,
   env: {
     node: true,
-    jest: true,
   },
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
