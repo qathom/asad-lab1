@@ -15,7 +15,7 @@
     </div>
     
     <div class="roulette">
-			<table>
+			<table id="tableRoulette">
 				<tr class="nums">
 					<td class="num green zero" rowspan="3"><span>0</span></td>
 					<td class="num red"><span>3</span></td>
@@ -82,5 +82,20 @@
 
     <!-- App -->
     <script src="http://localhost:3000/app.js"></script>
+    <script>
+       var table = document.getElementById("tableRoulette");
+         if (table != null) {
+             for (var i = 0; i < table.rows.length; i++) {
+                 for (var j = 0; j < table.rows[i].cells.length; j++)
+                 table.rows[i].cells[j].onclick = function () {
+                     tableText(this);
+                 };
+             }
+         }
+
+      function tableText(tableCell) {
+          console.log(tableCell.innerText)
+      }   
+    </script>
   </body>
 </html>
