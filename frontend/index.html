@@ -6,13 +6,71 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Project</title>
   </head>
   <body>
     <div class="container">
       <h1 class="text-center mt-4">Project</h1>
     </div>
+    
+    <div class="roulette">
+			<table>
+				<tr class="nums">
+					<td class="num green zero" rowspan="3"><span>0</span></td>
+					<td class="num red"><span>3</span></td>
+					<td class="num black"><span>6</span></td>
+					<td class="num red"><span>9</span></td>
+					<td class="num red"><span>12</span></td>
+					<td class="num black"><span>15</span></td>
+					<td class="num red"><span>18</span></td>
+					<td class="num red"><span>21</span></td>
+					<td class="num black"><span>24</span></td>
+					<td class="num red"><span>27</span></td>
+					<td class="num red"><span>30</span></td>
+					<td class="num black"><span>33</span></td>
+					<td class="num red"><span>36</span></td>
+				</tr>
+				<tr class="nums">
+					<td class="hidden"></td>
+					<td class="num black"><span>2</span></td>
+					<td class="num red"><span>5</span></td>
+					<td class="num black"><span>8</span></td>
+					<td class="num black"><span>11</span></td>
+					<td class="num red"><span>14</span></td>
+					<td class="num black"><span>17</span></td>
+					<td class="num black"><span>20</span></td>
+					<td class="num red"><span>23</span></td>
+					<td class="num black"><span>26</span></td>
+					<td class="num black"><span>29</span></td>
+					<td class="num red"><span>32</span></td>
+					<td class="num black"><span>35</span></td>
+				</tr>
+				<tr class="nums">
+					<td class="hidden"></td>
+					<td class="num red"><span>1</span></td>
+					<td class="num black"><span>4</span></td>
+					<td class="num red"><span>7</span></td>
+					<td class="num black"><span>10</span></td>
+					<td class="num black"><span>13</span></td>
+					<td class="num red"><span>16</span></td>
+					<td class="num red"><span>19</span></td>
+					<td class="num black"><span>22</span></td>
+					<td class="num red"><span>25</span></td>
+					<td class="num black"><span>28</span></td>
+					<td class="num black"><span>31</span></td>
+					<td class="num red"><span>34</span></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td colspan="2" class="sector" data-sector="8">EVEN</td>
+					<td colspan="2" class="sector red" data-sector="9">RED</td>
+					<td colspan="2" class="sector black" data-sector="10">BLACK</td>
+					<td colspan="2" class="sector" data-sector="11">ODD</td>
+					<td class="empty"></td>
+				</tr>
+			</table>
+		</div>
 
     <!-- Bootstrap JavaSript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
