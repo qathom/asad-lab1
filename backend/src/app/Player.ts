@@ -1,10 +1,9 @@
 export class Player {
     // Private id
     // Private bank ?
+    id: string
 
-    id: String
-
-    constructor(id:String) {
+    constructor(id: string) {
         this.id = id
     }
 }
