@@ -4,16 +4,10 @@ import * as path from 'path';
 import { Request, Response } from 'express';
 import { Controller } from './app/Controller'
 import { BetType } from './app/utils/BetType';
+import { ClientInitData, ClientBetData } from 'types';
 
 const app = express();
 const controller = new Controller()
-
-// var cookieParser = require('cookie-parser');
-// var session = require('express-session')
-// app.use(cookieParser());
-// app.use(session({
-//     secret: '34SDgsdgspxxxxxxxdfsG', // just a long random string
-// }));
 
 app.set('port', process.env.PORT || 3000);
 
@@ -24,9 +18,6 @@ let io = require('socket.io')(http);
 
 // Serve frontend
 app.get('/', (req: Request, res: Response) => {
-  // console.log(req.session.id)
-  
-  console.log("CanBet: "+controller.bet(BetType.ODD,null,100,"test"))
   res.sendFile(path.resolve('../frontend/index.html'));
 });
 
@@ -40,11 +31,27 @@ app.use(express.static(path.resolve('../frontend')));
 io.on('connection', (socket: any) => {
   console.log('a user connected');
 
-  socket.on('message', (message: any) => {
-    console.log(message);
+  // const canBet = controller.bet(BetType.ODD,null,100,"test");
 
-    // echo the message back down the websocket connection
-    socket.emit('message', `Well received: ${message}`);
+  socket.on('init', (data: ClientInitData) => {
+    const canSubscribe = controller.subscribePlayer(data.playerId);
+
+    // Init response for target client
+    socket.emit('init', { 
+      canSubscribe,
+    });
+
+    if (canSubscribe && controller.canStartGame()) {
+      // Emit to all clients
+      io.sockets.emit('start', { 
+        players: controller.getPlayers(),
+      });
+    }
+  });
+
+  socket.on('bet', (data: ClientBetData) => {
+    console.log(data);
+    // @TODO
   });
 });
 
