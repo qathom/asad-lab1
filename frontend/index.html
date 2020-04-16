@@ -10,67 +10,115 @@
     <title>Project</title>
   </head>
   <body>
-    <div class="container">
-      <h1 class="text-center mt-4">Project</h1>
+    <div class="modal" tabindex="-1" role="dialog" id="initModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Join game</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputPlayerName">Player name:</label>
+              <input type="text" class="form-control" id="inputPlayerName" aria-describedby="playernameHelp">
+              <div class="invalid-feedback">
+                Player name is not available
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="playButton">Play</button>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="roulette">
-			<table id="tableRoulette">
-				<tr class="nums">
-					<td class="num green zero" rowspan="3"><span>0</span></td>
-					<td class="num red"><span>3</span></td>
-					<td class="num black"><span>6</span></td>
-					<td class="num red"><span>9</span></td>
-					<td class="num red"><span>12</span></td>
-					<td class="num black"><span>15</span></td>
-					<td class="num red"><span>18</span></td>
-					<td class="num red"><span>21</span></td>
-					<td class="num black"><span>24</span></td>
-					<td class="num red"><span>27</span></td>
-					<td class="num red"><span>30</span></td>
-					<td class="num black"><span>33</span></td>
-					<td class="num red"><span>36</span></td>
-				</tr>
-				<tr class="nums">
-					<td class="hidden"></td>
-					<td class="num black"><span>2</span></td>
-					<td class="num red"><span>5</span></td>
-					<td class="num black"><span>8</span></td>
-					<td class="num black"><span>11</span></td>
-					<td class="num red"><span>14</span></td>
-					<td class="num black"><span>17</span></td>
-					<td class="num black"><span>20</span></td>
-					<td class="num red"><span>23</span></td>
-					<td class="num black"><span>26</span></td>
-					<td class="num black"><span>29</span></td>
-					<td class="num red"><span>32</span></td>
-					<td class="num black"><span>35</span></td>
-				</tr>
-				<tr class="nums">
-					<td class="hidden"></td>
-					<td class="num red"><span>1</span></td>
-					<td class="num black"><span>4</span></td>
-					<td class="num red"><span>7</span></td>
-					<td class="num black"><span>10</span></td>
-					<td class="num black"><span>13</span></td>
-					<td class="num red"><span>16</span></td>
-					<td class="num red"><span>19</span></td>
-					<td class="num black"><span>22</span></td>
-					<td class="num red"><span>25</span></td>
-					<td class="num black"><span>28</span></td>
-					<td class="num black"><span>31</span></td>
-					<td class="num red"><span>34</span></td>
-				</tr>
-				<tr>
-					<td class="empty"></td>
-					<td colspan="2" class="sector" data-sector="8">EVEN</td>
-					<td colspan="2" class="sector red" data-sector="9">RED</td>
-					<td colspan="2" class="sector black" data-sector="10">BLACK</td>
-					<td colspan="2" class="sector" data-sector="11">ODD</td>
-					<td class="empty"></td>
-				</tr>
-			</table>
-		</div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="waitModal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div>Waiting on players before starting the game!</div>
+            <div class="text-center mt-3">
+              <div class="spinner-border" role="status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="gameContainer" class="d-none">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="roulette">
+            <table id="tableRoulette">
+              <tr class="nums">
+                <td class="num green zero" rowspan="3"><span>0</span></td>
+                <td class="num red"><span>3</span></td>
+                <td class="num black"><span>6</span></td>
+                <td class="num red"><span>9</span></td>
+                <td class="num red"><span>12</span></td>
+                <td class="num black"><span>15</span></td>
+                <td class="num red"><span>18</span></td>
+                <td class="num red"><span>21</span></td>
+                <td class="num black"><span>24</span></td>
+                <td class="num red"><span>27</span></td>
+                <td class="num red"><span>30</span></td>
+                <td class="num black"><span>33</span></td>
+                <td class="num red"><span>36</span></td>
+              </tr>
+              <tr class="nums">
+                <td class="hidden"></td>
+                <td class="num black"><span>2</span></td>
+                <td class="num red"><span>5</span></td>
+                <td class="num black"><span>8</span></td>
+                <td class="num black"><span>11</span></td>
+                <td class="num red"><span>14</span></td>
+                <td class="num black"><span>17</span></td>
+                <td class="num black"><span>20</span></td>
+                <td class="num red"><span>23</span></td>
+                <td class="num black"><span>26</span></td>
+                <td class="num black"><span>29</span></td>
+                <td class="num red"><span>32</span></td>
+                <td class="num black"><span>35</span></td>
+              </tr>
+              <tr class="nums">
+                <td class="hidden"></td>
+                <td class="num red"><span>1</span></td>
+                <td class="num black"><span>4</span></td>
+                <td class="num red"><span>7</span></td>
+                <td class="num black"><span>10</span></td>
+                <td class="num black"><span>13</span></td>
+                <td class="num red"><span>16</span></td>
+                <td class="num red"><span>19</span></td>
+                <td class="num black"><span>22</span></td>
+                <td class="num red"><span>25</span></td>
+                <td class="num black"><span>28</span></td>
+                <td class="num black"><span>31</span></td>
+                <td class="num red"><span>34</span></td>
+              </tr>
+              <tr>
+                <td class="empty"></td>
+                <td colspan="2" class="sector" data-sector="8">EVEN</td>
+                <td colspan="2" class="sector red" data-sector="9">RED</td>
+                <td colspan="2" class="sector black" data-sector="10">BLACK</td>
+                <td colspan="2" class="sector" data-sector="11">ODD</td>
+                <td class="empty"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="col-sm-4 bg-light">
+          <h2>State</h2>
+
+          <div>
+            Players:
+            <div id="players"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap JavaSript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -82,20 +130,5 @@
 
     <!-- App -->
     <script src="http://localhost:3000/app.js"></script>
-    <script>
-       var table = document.getElementById("tableRoulette");
-         if (table != null) {
-             for (var i = 0; i < table.rows.length; i++) {
-                 for (var j = 0; j < table.rows[i].cells.length; j++)
-                 table.rows[i].cells[j].onclick = function () {
-                     tableText(this);
-                 };
-             }
-         }
-
-      function tableText(tableCell) {
-          console.log(tableCell.innerText)
-      }   
-    </script>
   </body>
 </html>
