@@ -24,13 +24,20 @@ function setPlayers(players) {
 
   players.forEach(function (player) {
     const item = document.createElement('li');
-    item.innerHTML = player.id+" "+player.bank;
+    item.setAttribute('data-id', player.id);
+    item.innerHTML = player.id + ' ' + player.bank;
 
     ul.appendChild(item);
   });
 
   playerContainer.innerHTML = '';
   playerContainer.appendChild(ul);
+}
+
+function setPlayerBank(playerId, bank) {
+  console.log('PLAYER ID', playerId);
+  const playerEl = document.querySelector(`#players [data-id="${playerId}"]`);
+  playerEl.innerHTML = playerId + ' ' + bank;
 }
 
 function enableRoulette() {
@@ -82,11 +89,14 @@ function initApp() {
     const element = closest(event.target, 'td');
     const caseValueElement = event.target.innerHTML;
 
-    // Selection
-    element.classList.add('selected');
+    if (gameState === 1) {
+      // No more bets
+      return;
+    }
 
-    console.log(element);
-  
+    // Toggle selection
+    element.classList.toggle('selected');
+
     const cell = parseInt(caseValueElement, 10);
 
     let betType = 0;
@@ -146,7 +156,8 @@ socket.on('playerJoin', function (data) {
 });
 
 socket.on('bet', function (data) {
-  console.log(data);
+  console.log('BET', data);
+  setPlayerBank(data.bet.player.playerId, data.bet.player.bank);
 });
 
 socket.on('state', function (state) {
