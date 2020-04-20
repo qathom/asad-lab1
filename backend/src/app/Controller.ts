@@ -45,6 +45,7 @@ export class Controller {
         let num:number = Math.round(Math.random() * 36);
         console.log("[NUMBER SELECTED]", num);
         this.gameState = GameStateType.RESULT;
+        this.io.emit('number', num);
         this.io.emit('state', this.gameState);
 
         let winners = this.computeWinners(num);
