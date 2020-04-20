@@ -20,6 +20,10 @@ export class Controller {
     this.players = new Map();
   }
 
+  getState() {
+    return this.gameState;
+  }
+
   setIO(io:any) {
     this.io = io;
   }

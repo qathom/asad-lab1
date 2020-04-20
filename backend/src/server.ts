@@ -42,6 +42,9 @@ io.on('connection', (socket: any) => {
       canSubscribe,
     });
 
+    // send state to the client
+    socket.emit('state', controller.getState())
+
     if (canSubscribe && controller.canStartGame()) {
       // Emit to all clients
       io.sockets.emit('start', { 
