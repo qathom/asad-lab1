@@ -1,9 +1,15 @@
 # asad-lab1
 
-## Frontend
 
-Go to the [frontend README](https://github.com/qathom/asad-lab1/tree/master/frontend).
+## Requirements
 
-## Backend
+NodeJS
+npm
 
-Go to the [backend README](https://github.com/qathom/asad-lab1/tree/master/backend).
+## INSTALLATION + RUN
+
+1. git clone https://github.com/qathom/asad-lab1.git
+2. cd backend
+3. npm install
+4. npm run start:dev
+5. Ouvrez http://localhost:3000
