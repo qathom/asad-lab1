@@ -36,13 +36,13 @@ export class Controller {
     return this.players.size === this.requiredNumberPlayers;
   }
 
-  bet(betType: BetType, cell:number, amount:number, playerId: string) {
+  bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
     let status = false
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
 
     if (player.bank < amount)
-      return false
+      return {player,status}
 
     switch(betType) {
       case BetType.CELL: {
@@ -70,7 +70,7 @@ export class Controller {
     if(status)
       bet.player.bank -= amount
 
-    return {status,player}
+    return {player,status}
   }
 
   process(){
