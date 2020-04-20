@@ -24,7 +24,7 @@ function startGame(players) {
 
   players.forEach(function (player) {
     const item = document.createElement('li');
-    item.innerHTML = player.id;
+    item.innerHTML = player.id+" "+player.bank;
 
     ul.appendChild(item);
   });

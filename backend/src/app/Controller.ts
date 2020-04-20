@@ -71,10 +71,14 @@ export class Controller {
     return this.players.size === this.requiredNumberPlayers;
   }
 
-  bet(betType: BetType, cell:number, amount:number, playerId: string) {
+  bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
     let status = false
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
+
+    if (player.bank < amount)
+      return {player,status}
+
     switch(betType) {
       case BetType.CELL: {
         status = this.board.betCell(cell, bet);
@@ -98,7 +102,10 @@ export class Controller {
       }
     }
 
-    return status;
+    if(status)
+      bet.player.bank -= amount
+
+    return {player,status}
   }
 
   process(){
@@ -133,6 +140,12 @@ export class Controller {
       winners.set(cellWinner.player,  oldWinnerAmount + (cellWinner.amount * CellUtils.CELL_MULTIPLIER))
     }
 
-    return winners;
+    for(let winner of winners){
+      winner[0].bank += winner[1]
+      console.log(winner[0])
+    }
+
+    this.board.reset()
+    return winners
   }
 }
