@@ -24,7 +24,23 @@ function setPlayers(players) {
   players.forEach(function (player) {
     const item = document.createElement('li');
     item.setAttribute('data-id', player.id);
-    item.innerHTML = player.id + ' ' + player.bank;
+
+    // Player info
+    const playerInfo = document.createElement('span');
+    playerInfo.classList.add('player-info');
+
+    playerInfo.innerHTML = player.id + ' ' + player.bank;
+
+    item.appendChild(playerInfo);
+
+    // Player winner state
+    const playerWinner = document.createElement('span');
+    playerWinner.classList.add('player-winner-state');
+    playerWinner.classList.add('d-none');
+
+    playerWinner.innerHTML = '[winner]';
+
+    item.appendChild(playerWinner);
 
     ul.appendChild(item);
   });
@@ -33,10 +49,22 @@ function setPlayers(players) {
   playerContainer.appendChild(ul);
 }
 
-function setPlayerBank(playerId, bank) {
+function setPlayerBank(playerId, bank, winner) {
   console.log('PLAYER ID', playerId);
   const playerEl = document.querySelector(`#players [data-id="${playerId}"]`);
-  playerEl.innerHTML = playerId + ' ' + bank;
+  playerEl.querySelector('.player-info').innerHTML = playerId + ' ' + bank;
+
+  const playerWinnerEl = playerEl.querySelector('.player-winner-state');
+
+  if (winner) {
+    if (playerWinnerEl.classList.contains('d-none')) {
+      playerWinnerEl.classList.remove('d-none');
+    }
+  } else {
+    if (!playerWinnerEl.classList.contains('d-none')) {
+      playerWinnerEl.classList.add('d-none');
+    }
+  }
 }
 
 function enableRoulette() {
@@ -156,7 +184,20 @@ socket.on('playerJoin', function (data) {
 
 socket.on('bet', function (data) {
   console.log('BET', data);
-  setPlayerBank(data.bet.player.playerId, data.bet.player.bank);
+  setPlayerBank(data.bet.player.playerId, data.bet.player.bank, false);
+});
+
+socket.on('results', function (winners) {
+  console.log('RESULTS', winners);
+
+  if (Object.entries(winners).length === 0) {
+    return;
+  }
+
+  for (let [player, value] of winners.entries()) {
+    console.log('PLAYER', player, 'BANK', value);
+    setPlayerBank(player.player.id, value, true);
+  }
 });
 
 socket.on('state', function (state) {
@@ -182,6 +223,8 @@ socket.on('state', function (state) {
       break;
   }
 });
+
+
 
 
 // Init app
