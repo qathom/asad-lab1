@@ -47,7 +47,7 @@ io.on('connection', (socket: any) => {
 
     if (canSubscribe && controller.canStartGame()) {
       // Emit to all clients
-      io.sockets.emit('start', { 
+      io.sockets.emit('playerJoin', { 
         players: controller.getPlayers(),
       });
     }

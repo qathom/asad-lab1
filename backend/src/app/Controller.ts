@@ -51,6 +51,7 @@ export class Controller {
 
         let winners = this.computeWinners(num);
         console.log("winners", winners);
+        this.io.emit('results', winners);
 
         // new round
         setTimeout(()=>{this.openTable()},1000);
@@ -86,6 +87,7 @@ export class Controller {
     const bet : Bet = new Bet(amount, player)
 
     if(this.gameState != GameStateType.OPEN) {
+      console.log("cannot bet now");
       return {player, status}
     }
 
