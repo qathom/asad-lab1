@@ -72,6 +72,13 @@ io.on('connection', (socket: any) => {
   });
 });
 
+
+// start controller
+controller.setIO(io)
+controller.openTable()
+
+
+
 // Listen to port 3000
 const server = http.listen(3000, () => {
   console.log('listening on *:3000');

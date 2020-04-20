@@ -1,11 +1,14 @@
 import {Board} from './Board'
 import { BetType } from './utils/BetType';
+import { GameStateType } from './utils/GameStateType';
 import { Bet } from './Bet';
 import { Player } from './Player';
 import { CellUtils } from './utils/CellUtils';
 
 export class Controller {
   board: Board;
+  gameState: GameStateType;
+  io:any;
 
   // @TODO : keep?
   players: Map<string, Player>;
@@ -15,6 +18,38 @@ export class Controller {
   constructor() {
     this.board = new Board();
     this.players = new Map();
+  }
+
+  setIO(io:any) {
+    this.io = io;
+  }
+ 
+  openTable() {
+
+    console.log("[NEW TURN] - place your bets")
+    this.gameState = GameStateType.OPEN;
+    this.io.emit('state', this.gameState);
+
+    setTimeout(()=>{
+
+      console.log("[NO MORE BETS]");
+      this.gameState = GameStateType.NO_MORE_BETS;
+      this.io.emit('state', this.gameState);
+
+
+      setTimeout(()=>{
+
+        // new random number
+        let num:number = Math.round(Math.random() * 36);
+        console.log("[NUMBER SELECTED]", num);
+        this.gameState = GameStateType.RESULT;
+        this.io.emit('state', this.gameState);
+
+        // new round
+        setTimeout(()=>{this.openTable()},1000);
+
+      },2000)
+    },10000)
   }
 
   subscribePlayer(playerId: string): boolean {
