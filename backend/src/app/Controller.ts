@@ -13,8 +13,6 @@ export class Controller {
   // @TODO : keep?
   players: Map<string, Player>;
 
-  requiredNumberPlayers: number = 1;
-
   constructor() {
     this.board = new Board();
     this.players = new Map();
@@ -72,10 +70,6 @@ export class Controller {
 
   getPlayers(): Player[] {
     return Array.from(this.players.values());
-  }
-
-  canStartGame(): boolean {
-    return this.players.size === this.requiredNumberPlayers;
   }
 
   bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
