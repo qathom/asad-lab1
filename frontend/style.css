@@ -37,6 +37,19 @@ tr {
   white-space: nowrap;
 }
 
+/* User selection */
+.roulette .selected {
+  box-shadow: inset 0 0 15px 0 blue !important;
+}
+
+.roulette .selected span {
+  color: #fff !important;
+}
+
+.roulette.disabled {
+  opacity: 0.1;
+}
+
 /* elements */
 .roulette .sector {
   background: #1C7022;
