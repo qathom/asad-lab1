@@ -49,6 +49,9 @@ export class Controller {
         this.gameState = GameStateType.RESULT;
         this.io.emit('state', this.gameState);
 
+        let winners = this.computeWinners(num);
+        console.log("winners", winners);
+
         // new round
         setTimeout(()=>{this.openTable()},1000);
 
@@ -76,9 +79,15 @@ export class Controller {
   }
 
   bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
+
+
     let status = false
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
+
+    if(this.gameState != GameState.OPEN) {
+      return {player, status}
+    }
 
     if (player.bank < amount)
       return {player,status}
