@@ -85,7 +85,7 @@ export class Controller {
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
 
-    if(this.gameState != GameState.OPEN) {
+    if(this.gameState != GameStateType.OPEN) {
       return {player, status}
     }
 
