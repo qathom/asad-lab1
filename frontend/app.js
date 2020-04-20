@@ -191,17 +191,13 @@ socket.on('bet', function (data) {
   setPlayerBank(data.bet.player.playerId, data.bet.player.bank, false);
 });
 
-socket.on('results', function (winners) {
-  console.log('RESULTS', winners);
+socket.on('results', function (data) {
+  console.log('RESULTS', data);
 
-  if (Object.entries(winners).length === 0) {
-    return;
-  }
-
-  for (let [player, value] of winners.entries()) {
+  data.winners.forEach(function (winner) {
     console.log('PLAYER', player, 'BANK', value);
     setPlayerBank(player.player.id, value, true);
-  }
+  });
 });
 
 socket.on('state', function (state) {

@@ -2,8 +2,29 @@ body.moving {
   cursor: move;
 }
 
+body {
+  background-color: #ddd;
+}
+
+.game-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #ddd;
+}
+
+.state-panel {
+  background-color: #fff;
+  width: 300px;
+  padding: 20px;
+  height: 100vh;
+}
+
+.roulette-container {
+  flex: 1;
+}
+
 .roulette {
-  margin: 40px;
+  margin-top: 100px;
   padding: 40px;
   background: #1C7022;
   display: table;
