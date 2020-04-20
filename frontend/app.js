@@ -116,7 +116,7 @@ function initApp() {
     const element = closest(event.target, 'td');
     const caseValueElement = event.target.innerHTML;
 
-    if (gameState !== 0) {
+    if (gameState !== 0 || element.classList.contains('empty')) {
       // No more bets
       return;
     }
