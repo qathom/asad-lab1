@@ -52,7 +52,7 @@ io.on('connection', (socket: any) => {
 
   socket.on('bet', (data: ClientBetData) => {
     console.log(data)
-    let status = controller.bet(data.betType,data.cell,data.amount, data.playerId)
+    let result:any = controller.bet(data.betType,data.cell,data.amount, data.playerId)
 
     // TEST/DEBUG WINNERS
     let randomCell = Math.floor(Math.random() * 37)
@@ -65,9 +65,12 @@ io.on('connection', (socket: any) => {
         betType:data.betType,
         cell:data.cell,
         amount:data.amount,
-        playerId:data.playerId,
+        player:{
+          playerId: result.player.playerId,
+          bank: result.player.bank
+        },
       },
-      status: status,
+      status: result.status,
     });
   });
 });
