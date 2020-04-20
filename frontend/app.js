@@ -34,21 +34,37 @@ function startGame(players) {
 
   // Board
   document.querySelector('#tableRoulette').addEventListener('click', function (event) {
-    const target = event.target.nodeName === 'TD' ? event.target.querySelector('span') : event.target;
+    const target = event.target.innerHTML;
 
-    if (!target) {
-      return;
+    const cell = parseInt(target, 10);
+
+    let betType = 0;
+    if (isNaN(cell)) {
+      switch(target){
+        case 'ODD':{//1
+          betType = 1;
+          break
+        }
+        case 'EVEN':{//2
+          betType = 2;
+          break
+        }
+        case 'RED': {//3
+          betType = 3;
+          break
+        }
+        case 'BLACK':{//4
+          betType = 4;
+          break
+        }
+      }
     }
 
-    const value = parseInt(target.innerHTML, 10);
+    let amount = 1;
 
-    if (isNaN(value)) {
-      return;
-    }
+    console.log('CELL', cell, 'BetType', betType);
 
-    console.log('BET', value);
-
-    socket.emit('bet', { value, playerId: PLAYER_ID })
+    socket.emit('bet', { betType: betType, cell: cell, amount: amount, playerId: PLAYER_ID })
   });
 }
 
@@ -93,6 +109,10 @@ socket.on('init', function (data) {
 
 socket.on('start', function (data) {
   startGame(data.players);
+});
+
+socket.on('bet', function (data) {
+  console.log(data);
 });
 
 

@@ -1,8 +1,12 @@
+import { BetType } from "../src/app/utils/BetType";
+
 export type ClientInitData = {
   playerId: string;
 };
 
 export type ClientBetData = {
   playerId: string;
-  value: number;
+  cell: number;
+  betType: BetType;
+  amount: number;
 };

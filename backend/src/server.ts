@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { Controller } from './app/Controller'
 import { BetType } from './app/utils/BetType';
 import { ClientInitData, ClientBetData } from 'types';
+import { Bet } from './app/Bet';
 
 const app = express();
 const controller = new Controller()
@@ -50,8 +51,17 @@ io.on('connection', (socket: any) => {
   });
 
   socket.on('bet', (data: ClientBetData) => {
-    console.log(data);
-    // @TODO
+    console.log(data)
+    let status = controller.bet(data.betType,data.cell,data.amount, data.playerId)
+    io.sockets.emit('bet', {
+      bet: {
+        betType:data.betType,
+        cell:data.cell,
+        amount:data.amount,
+        playerId:data.playerId,
+      },
+      status: status,
+    });
   });
 });
 
