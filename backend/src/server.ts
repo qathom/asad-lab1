@@ -53,6 +53,13 @@ io.on('connection', (socket: any) => {
   socket.on('bet', (data: ClientBetData) => {
     console.log(data)
     let status = controller.bet(data.betType,data.cell,data.amount, data.playerId)
+
+    // TEST/DEBUG WINNERS
+    let randomCell = Math.floor(Math.random() * 37)
+    let winners = controller.computeWinners(randomCell)
+    console.log("SelectedCell", randomCell, "winners", winners)
+
+
     io.sockets.emit('bet', {
       bet: {
         betType:data.betType,

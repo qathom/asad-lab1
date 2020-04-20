@@ -37,7 +37,7 @@ export class Board {
         return true
     }
 
-    computeCellWinner(selectedCell:number):Bet{
+    cellWinner(selectedCell:number):Bet{
         return this.cellBet[selectedCell]
     }
 
