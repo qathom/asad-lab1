@@ -1,23 +1,23 @@
 const socket = io('http://localhost:3000');
 
 let PLAYER_ID = null;
+let gameState = 1; // Init with No more bets
+let playerBank = 10;
 
-function startGame(players) {
-  // Show the game container
-  if (document.querySelector('#gameContainer').classList.contains('d-none')) {
-    document.querySelector('#gameContainer').classList.remove('d-none');
-  }
+function closest(element, selector) {
+  let el = element;
 
-  // Remove the init modal
-  if (document.querySelector('#initModal').classList.contains('show')) {
-    $('#initModal').modal('hide');
-  }
+  do {
+    if (el.matches(selector)) {
+      return el;
+    }
+    el = (el.parentElement || el.parentNode);
+  } while (el !== null && el.nodeType === 1);
 
-  // Remove the wait modal
-  if (document.querySelector('#waitModal').classList.contains('show')) {
-    $('#waitModal').modal('hide');
-  }
+  return null;
+}
 
+function setPlayers(players) {
   // Display the list of players
   const playerContainer = document.querySelector('#players');
   const ul = document.createElement('ul');
@@ -31,16 +31,68 @@ function startGame(players) {
 
   playerContainer.innerHTML = '';
   playerContainer.appendChild(ul);
+}
+
+function enableRoulette() {
+  const rouletteEl = document.querySelector('.roulette');
+
+  if (rouletteEl.classList.contains('disabled')) {
+    rouletteEl.classList.remove('disabled');
+  }
+}
+
+function disableRoulette() {
+  const rouletteEl = document.querySelector('.roulette');
+
+  if (!rouletteEl.classList.contains('disabled')) {
+    rouletteEl.classList.add('disabled');
+  }
+}
+
+function resetRoulette() {
+  document.querySelectorAll('.roulette td.selected').forEach(function (element) {
+    element.classList.remove('selected');
+  });
+}
+
+function playerJoin(players) {
+  // Remove the init modal
+  if (document.querySelector('#initModal').classList.contains('show')) {
+    $('#initModal').modal('hide');
+  }
+
+  setPlayers(players);
+}
+
+function initApp() {
+  // Show the modal
+  $('#initModal').modal({ backdrop: 'static', keyboard: false });
+  $('#initModal').modal('show');
+
+  document.querySelector('#playButton').addEventListener('click', function () {
+    const playerId = document.querySelector('#inputPlayerName').value;
+
+    PLAYER_ID = playerId;
+
+    socket.emit('init', { playerId: PLAYER_ID });
+  });
 
   // Board
   document.querySelector('#tableRoulette').addEventListener('click', function (event) {
-    const target = event.target.innerHTML;
+    const element = closest(event.target, 'td');
+    const caseValueElement = event.target.innerHTML;
 
-    const cell = parseInt(target, 10);
+    // Selection
+    element.classList.add('selected');
+
+    console.log(element);
+  
+    const cell = parseInt(caseValueElement, 10);
 
     let betType = 0;
+
     if (isNaN(cell)) {
-      switch(target){
+      switch(caseValueElement) {
         case 'ODD':{//1
           betType = 1;
           break
@@ -68,20 +120,6 @@ function startGame(players) {
   });
 }
 
-function initApp() {
-  // Show the modal
-  $('#initModal').modal({ backdrop: 'static', keyboard: false });
-  $('#initModal').modal('show');
-
-  document.querySelector('#playButton').addEventListener('click', function () {
-    const playerId = document.querySelector('#inputPlayerName').value;
-
-    PLAYER_ID = playerId;
-
-    socket.emit('init', { playerId: PLAYER_ID });
-  });
-}
-
 // Listeners
 socket.on('init', function (data) {
   const playerInput = document.querySelector('#inputPlayerName');
@@ -101,18 +139,38 @@ socket.on('init', function (data) {
   }
 
   $('#initModal').modal('hide');
-
-  // Show wait modal
-  $('#waitModal').modal({ backdrop: 'static', keyboard: false });
-  $('#waitModal').modal('show');
 });
 
-socket.on('start', function (data) {
-  startGame(data.players);
+socket.on('playerJoin', function (data) {
+  playerJoin(data.players);
 });
 
 socket.on('bet', function (data) {
   console.log(data);
+});
+
+socket.on('state', function (state) {
+  console.log('STATE', state);
+
+  // Update state
+  gameState = state;
+
+  switch (true) {
+    case (gameState === 0):
+      // Open
+      enableRoulette();
+      break;
+    case (gameState === 1):
+      // No more bets
+      disableRoulette();
+      break;
+    case (gameState === 2):
+      // Result
+      resetRoulette();
+      break;
+    default:
+      break;
+  }
 });
 
 
