@@ -1,5 +1,7 @@
 const socket = io('http://localhost:3000');
 
+let PLAYER_ID = null;
+
 function startGame(players) {
   // Show the game container
   if (document.querySelector('#gameContainer').classList.contains('d-none')) {
@@ -46,7 +48,7 @@ function startGame(players) {
 
     console.log('BET', value);
 
-    socket.emit('bet', { value })
+    socket.emit('bet', { value, playerId: PLAYER_ID })
   });
 }
 
@@ -57,7 +59,10 @@ function initApp() {
 
   document.querySelector('#playButton').addEventListener('click', function () {
     const playerId = document.querySelector('#inputPlayerName').value;
-    socket.emit('init', { playerId });
+
+    PLAYER_ID = playerId;
+
+    socket.emit('init', { playerId: PLAYER_ID });
   });
 }
 

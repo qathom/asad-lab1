@@ -3,5 +3,6 @@ export type ClientInitData = {
 };
 
 export type ClientBetData = {
+  playerId: string;
   value: number;
 };
