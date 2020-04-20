@@ -2,7 +2,6 @@ const socket = io('http://localhost:3000');
 
 let PLAYER_ID = null;
 let gameState = 1; // Init with No more bets
-let playerBank = 10;
 
 function closest(element, selector) {
   let el = element;
@@ -89,7 +88,7 @@ function initApp() {
     const element = closest(event.target, 'td');
     const caseValueElement = event.target.innerHTML;
 
-    if (gameState === 1) {
+    if (gameState !== 0) {
       // No more bets
       return;
     }
