@@ -69,7 +69,7 @@ io.on('connection', (socket: any) => {
         cell:data.cell,
         amount:data.amount,
         player:{
-          playerId: result.player.playerId,
+          playerId: result.player.id,
           bank: result.player.bank
         },
       },
