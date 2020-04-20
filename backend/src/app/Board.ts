@@ -14,8 +14,10 @@ export class Board {
     }
 
     betCell(cell:number, bet: Bet):boolean{
-        if (this.cellBet[cell] != undefined && this.cellBet[cell] != null)
+        if (this.cellBet[cell] != undefined && this.cellBet[cell] != null){
+            // if (this.cellBet[cell].player.id == bet.player.id)
             return false
+        }
 
         this.cellBet[cell] = bet
         return true
