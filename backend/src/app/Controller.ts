@@ -10,7 +10,6 @@ export class Controller {
   gameState: GameStateType;
   io:any;
 
-  // @TODO : keep?
   players: Map<string, Player>;
 
   constructor() {
@@ -50,7 +49,9 @@ export class Controller {
 
         let winners = this.computeWinners(num);
         console.log("winners", winners);
-        this.io.emit('results', winners);
+        this.io.emit('results', {
+          winners: Array.from(winners.keys())
+        });
 
         // new round
         setTimeout(()=>{this.openTable()},1000);
@@ -75,8 +76,6 @@ export class Controller {
   }
 
   bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
-
-
     let status = false
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
