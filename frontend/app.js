@@ -195,8 +195,8 @@ socket.on('results', function (data) {
   console.log('RESULTS', data);
 
   data.winners.forEach(function (winner) {
-    console.log('PLAYER', player, 'BANK', value);
-    setPlayerBank(player.player.id, value, true);
+    console.log('WINNER', winner);
+    setPlayerBank(winner.id, winner.bank, true);
   });
 });
 
