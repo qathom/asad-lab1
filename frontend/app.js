@@ -182,6 +182,10 @@ socket.on('playerJoin', function (data) {
   playerJoin(data.players);
 });
 
+socket.on('number', function (randomNumber) {
+  console.log('RANDOM NUMBER', randomNumber);
+});
+
 socket.on('bet', function (data) {
   console.log('BET', data);
   setPlayerBank(data.bet.player.playerId, data.bet.player.bank, false);
