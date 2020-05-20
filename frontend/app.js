@@ -104,11 +104,48 @@ function initApp() {
   $('#initModal').modal('show');
 
   document.querySelector('#playButton').addEventListener('click', function () {
-    const playerId = document.querySelector('#inputPlayerName').value;
-
-    PLAYER_ID = playerId;
-
-    socket.emit('init', { playerId: PLAYER_ID });
+    if(document.querySelector('#inputLoginPlayerName').value === "") {
+       console.log("invalid player name");
+       alert("invalid player name");
+    } else if(document.querySelector('#inputLoginPassword').value !== document.querySelector('#inputPasswordConfirm').value) {
+       console.log("provide password");
+       alert("provide password");
+    } else {
+       const playerId = document.querySelector('#inputLoginPlayerName').value;
+       const pwd = document.querySelector('#inputLoginPassword').value;
+       PLAYER_ID = playerId;
+       PLAYER_PWD = pwd;
+       socket.emit('init', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD });  
+    }
+  });
+  
+  document.querySelector('#playFromCreateAccountButton').addEventListener('click', function () {
+    if(document.querySelector('#inputBalance').value <= 0 || document.querySelector('#inputBalance').value > 1000) {
+       console.log("invalid balance");
+       alert("invalid balance");
+    } else if(document.querySelector('#inputPassword').value !== document.querySelector('#inputPasswordConfirm').value) {
+       console.log(document.querySelector('#inputPassword').value);
+       console.log(document.querySelector('#inputPasswordConfirm').value);
+       console.log("password don't match");
+       alert("password don't match");
+    } else if(document.querySelector('#inputPlayerName').value === "") {
+       console.log("invalid player name");
+       alert("invalid player name");
+    } else {
+       const playerId = document.querySelector('#inputPlayerName').value;
+       const pwd = document.querySelector('#inputPassword').value;
+       const balance = document.querySelector('#inputBalance').value;
+       PLAYER_ID = playerId;
+       PLAYER_PWD = pwd;
+       BALANCE = balance;
+       socket.emit('createAccount', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD, balance: BALANCE });
+    }
+  });
+  
+  document.querySelector('#createAccountButton').addEventListener('click', function () {
+    $('#initModal').modal('hide');
+    $('#initCreateAccountModal').modal({ backdrop: 'static', keyboard: false });
+    $('#initCreateAccountModal').modal('show');
   });
 
   // Board
@@ -176,6 +213,11 @@ socket.on('init', function (data) {
   }
 
   $('#initModal').modal('hide');
+});
+
+socket.on('createAccount', function (data) {
+   $('#initCreateAccountModal').modal('hide');
+   console.log('DATA', data);
 });
 
 socket.on('playerJoin', function (data) {
