@@ -35,7 +35,9 @@ io.on('connection', (socket: any) => {
   // const canBet = controller.bet(BetType.ODD,null,100,"test");
 
   socket.on('init', (data: ClientInitData) => {
-    const canSubscribe = controller.subscribePlayer(data.playerId);
+
+    // TODO ADD PASSWORD
+    const canSubscribe = controller.subscribePlayer(data.playerId, "1234");
 
     // Init response for target client
     socket.emit('init', { 

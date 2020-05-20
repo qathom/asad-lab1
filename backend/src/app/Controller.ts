@@ -4,17 +4,20 @@ import { GameStateType } from './utils/GameStateType';
 import { Bet } from './Bet';
 import { Player } from './Player';
 import { CellUtils } from './utils/CellUtils';
+import { PlayerAuth } from './PlayerAuth'
 
 export class Controller {
   board: Board;
   gameState: GameStateType;
   io:any;
+  playerAuth: PlayerAuth
 
   players: Map<string, Player>;
 
   constructor() {
     this.board = new Board();
     this.players = new Map();
+    this.playerAuth = new PlayerAuth();
   }
 
   getState() {
@@ -60,7 +63,13 @@ export class Controller {
     },10000)
   }
 
-  subscribePlayer(playerId: string): boolean {
+  subscribePlayer(playerId: string, password:string): boolean {
+
+    // TODO LINK WITH AUTH
+    let player: Player = new Player(playerId, password)
+    return this.playerAuth.subscribePlayer(player);
+
+    /*
     // Unique players check
     if (this.players.has(playerId)) {
       return false;
@@ -69,6 +78,7 @@ export class Controller {
     this.players.set(playerId, new Player(playerId));
 
     return true;
+    */
   }
 
   getPlayers(): Player[] {
