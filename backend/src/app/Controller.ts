@@ -85,7 +85,7 @@ export class Controller {
       return {player, status}
     }
 
-    if (player.bank < amount)
+    if (!player.canBet(amount))
       return {player,status}
 
     switch(betType) {
@@ -111,8 +111,11 @@ export class Controller {
       }
     }
 
+    // TODO REMOVE
+    // if(status)
+    //   bet.player.bank -= amount
     if(status)
-      bet.player.bank -= amount
+      bet.player.currentAmountBetted += amount
 
     return {player,status}
   }
@@ -148,6 +151,11 @@ export class Controller {
     for(let winner of winners){
       winner[0].bank += winner[1]
       console.log(winner[0])
+    }
+
+    for(let [key, player] of this.players) {
+      player.bank -= player.currentAmountBetted
+      player.currentAmountBetted = 0
     }
 
     this.board.reset()

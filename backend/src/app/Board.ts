@@ -16,8 +16,8 @@ export class Board {
     betCell(cell:number, bet: Bet):boolean{
         if (this.cellBet[cell] != undefined && this.cellBet[cell] != null){
             if (this.cellBet[cell].player.id == bet.player.id){
+                bet.player.currentAmountBetted -= this.cellBet[cell].amount
                 this.cellBet[cell] = undefined
-                bet.player.bank += 1
             }
             return false
         }
@@ -29,8 +29,8 @@ export class Board {
     betOddEven(isOdd:boolean, bet: Bet):boolean{
         if (this.oddEvenBet[+!isOdd] != undefined && this.oddEvenBet[+!isOdd] != null){
             if (this.oddEvenBet[+!isOdd].player.id == bet.player.id){
+                bet.player.currentAmountBetted -= this.cellBet[+!isOdd].amount
                 this.oddEvenBet[+!isOdd] = undefined
-                bet.player.bank += 1
             }
             return false
         }
@@ -42,8 +42,8 @@ export class Board {
     betColor(isRed:boolean, bet: Bet):boolean{
         if (this.colorBet[+!isRed] != undefined && this.colorBet[+!isRed] != null){
             if (this.colorBet[+!isRed].player.id == bet.player.id){
+                bet.player.currentAmountBetted -= this.cellBet[+!isRed].amount
                 this.colorBet[+!isRed] = undefined
-                bet.player.bank += 1
             }
             return false
         }
@@ -55,11 +55,11 @@ export class Board {
         return this.cellBet[selectedCell]
     }
 
-    oddEvenWinner(isOdd:boolean){
+    oddEvenWinner(isOdd:boolean):Bet{
         return this.oddEvenBet[+!isOdd]
     }
 
-    colorWinner(isRed:boolean){
+    colorWinner(isRed:boolean):Bet{
         return this.colorBet[+!isRed]
     }
 

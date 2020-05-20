@@ -70,7 +70,8 @@ io.on('connection', (socket: any) => {
         amount:data.amount,
         player:{
           playerId: result.player.id,
-          bank: result.player.bank
+          bank: result.player.bank,
+          currentAmountBetted: result.player.currentAmountBetted
         },
       },
       status: result.status,
