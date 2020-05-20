@@ -49,10 +49,10 @@ function setPlayers(players) {
   playerContainer.appendChild(ul);
 }
 
-function setPlayerBank(playerId, bank, winner) {
+function setPlayerBank(playerId, bank, betsAmount, winner) {
   console.log('PLAYER ID', playerId);
   const playerEl = document.querySelector(`#players [data-id="${playerId}"]`);
-  playerEl.querySelector('.player-info').innerHTML = playerId + ' ' + bank;
+  playerEl.querySelector('.player-info').innerHTML = playerId + ' ' + (bank-betsAmount);
 
   const playerWinnerEl = playerEl.querySelector('.player-winner-state');
 
@@ -230,7 +230,7 @@ socket.on('number', function (randomNumber) {
 
 socket.on('bet', function (data) {
   console.log('BET', data);
-  setPlayerBank(data.bet.player.playerId, data.bet.player.bank, false);
+  setPlayerBank(data.bet.player.playerId, data.bet.player.bank, data.bet.player.currentAmountBetted, false);
 });
 
 socket.on('results', function (data) {
@@ -238,7 +238,7 @@ socket.on('results', function (data) {
 
   data.winners.forEach(function (winner) {
     console.log('WINNER', winner);
-    setPlayerBank(winner.id, winner.bank, true);
+    setPlayerBank(winner.id, winner.bank,  winner.currentAmountBetted, true);
   });
 });
 
