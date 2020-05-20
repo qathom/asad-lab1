@@ -117,10 +117,6 @@ export class Controller {
     return {player,status}
   }
 
-  process(){
-
-  }
-
   computeWinners(selectedCell:number):Map<Player,number>{
     const winners : Map<Player,number> = new Map()
 
