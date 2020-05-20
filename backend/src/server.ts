@@ -35,7 +35,26 @@ io.on('connection', (socket: any) => {
   // const canBet = controller.bet(BetType.ODD,null,100,"test");
 
   socket.on('init', (data: ClientInitData) => {
-    const canSubscribe = controller.subscribePlayer(data.playerId);
+    const canLogin = controller.loginPlayer(data.playerId, data.playerPassword);
+
+    // Init response for target client
+    socket.emit('init', { 
+      canLogin,
+    });
+
+    // send state to the client
+    socket.emit('state', controller.getState())
+
+    if (canLogin) {
+      // Emit to all clients
+      io.sockets.emit('playerJoin', { 
+        players: controller.getPlayers(),
+      });
+    }
+  });
+  
+  socket.on('createAccount', (data: ClientAccountData) => {
+     const canSubscribe = controller.subscribePlayer(data.playerId, data.playerPassword, data.playerBalance);
 
     // Init response for target client
     socket.emit('init', { 

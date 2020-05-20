@@ -19,14 +19,45 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="inputPlayerName">Player name:</label>
-              <input type="text" class="form-control" id="inputPlayerName" aria-describedby="playernameHelp">
+              <input type="text" class="form-control" id="inputLoginPlayerName" aria-describedby="playernameHelp" required>
+              <label for="inputPlayerName">Password:</label>
+              <input type="password" class="form-control" id="inputLoginPassword" aria-describedby="passwordHelp" required>
+              <div class="invalid-feedback">
+                Invalid credentials
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="playButton">Play</button>
+            <button type="button" class="btn btn-primary" id="createAccountButton">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal" tabindex="-1" role="dialog" id="initCreateAccountModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create account</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputPlayerName">Player name:</label>
+              <input type="text" class="form-control" id="inputPlayerName" aria-describedby="playernameHelp" required>
+              <label for="inputBalance">Balance:</label>
+              <input type="number" class="form-control" id="inputBalance" aria-describedby="balanceHelp" required>
+              <label for="inputPassword">Password:</label>
+              <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordHelp" required>
+              <label for="inputPasswordConfirm">Password confirm:</label>
+              <input type="password" class="form-control" id="inputPasswordConfirm" aria-describedby="passwordConfirmHelp" required>
               <div class="invalid-feedback">
                 Player name is not available
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="playButton">Play</button>
+            <button type="button" class="btn btn-primary" id="playFromCreateAccountButton">Play</button>
           </div>
         </div>
       </div>
