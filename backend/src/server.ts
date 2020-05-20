@@ -4,7 +4,7 @@ import * as path from 'path';
 import { Request, Response } from 'express';
 import { Controller } from './app/Controller'
 import { BetType } from './app/utils/BetType';
-import { ClientInitData, ClientBetData } from 'types';
+import { ClientInitData,ClientAccountData,  ClientBetData } from 'types';
 import { Bet } from './app/Bet';
 
 const app = express();
@@ -36,11 +36,29 @@ io.on('connection', (socket: any) => {
 
   socket.on('init', (data: ClientInitData) => {
 
-    // TODO ADD PASSWORD
-    const canSubscribe = controller.subscribePlayer(data.playerId, "1234");
+    const canLogin = controller.loginPlayer(data.playerId, data.playerPassword);
 
     // Init response for target client
     socket.emit('init', { 
+      canLogin,
+    });
+
+    // send state to the client
+    socket.emit('state', controller.getState())
+
+    if (canLogin) {
+      // Emit to all clients
+      io.sockets.emit('playerJoin', { 
+        players: controller.getPlayers(),
+      });
+    }
+  });
+  
+  socket.on('createAccount', (data: ClientAccountData) => {
+     const canSubscribe = controller.subscribePlayer(data.playerId, data.playerPassword, data.playerBalance);
+
+    // Init response for target client
+    socket.emit('createAccount', { 
       canSubscribe,
     });
 

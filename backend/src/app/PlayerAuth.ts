@@ -42,16 +42,16 @@ export class PlayerAuth {
         return true;
     }
 
-    checkLogin(player: Player):boolean {
+    checklogin(pid: string, password:string):Player {
        let players = this.getPlayers()
        for(let idx in players) {
             let playerJSON = players[idx]
-            if(playerJSON.id == player.id && md5(player.password == playerJSON.password)) {
-                return true
+            if(pid == playerJSON.id && md5(password) == playerJSON.password ) {
+                return new Player(pid, password, playerJSON.bank)
             }
         }
 
-        return false
+        return null
     }
 }
   

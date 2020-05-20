@@ -5,9 +5,9 @@ export class Player {
     password: string
     bank: number
 
-    constructor(id: string, password: string) {
+    constructor(id: string, password: string, bank: number) {
         this.id = id
         this.password = password
-        this.bank = 10
+        this.bank = bank
     }
 }

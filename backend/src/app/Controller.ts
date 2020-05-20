@@ -63,23 +63,30 @@ export class Controller {
     },10000)
   }
 
-  subscribePlayer(playerId: string, password:string): boolean {
 
-    // TODO LINK WITH AUTH
-    let player: Player = new Player(playerId, password)
-    return this.playerAuth.subscribePlayer(player);
+  subscribePlayer(playerId: string, password:string, balance: number): boolean {
+    let player: Player = new Player(playerId, password, balance)
 
-    /*
-    // Unique players check
-    if (this.players.has(playerId)) {
-      return false;
+    let cansub = this.playerAuth.subscribePlayer(player);
+
+    if(cansub) {
+      this.players.set(playerId, player);
     }
 
-    this.players.set(playerId, new Player(playerId));
-
-    return true;
-    */
+    return cansub
   }
+
+  loginPlayer(pid:string, password:string):boolean{
+
+    let player:Player = this.playerAuth.checklogin(pid, password);
+    if( player == null) {
+      return false
+    }
+    
+    this.players.set(pid, player);
+    return true
+  }
+
 
   getPlayers(): Player[] {
     return Array.from(this.players.values());
