@@ -60,11 +60,13 @@ export class Controller {
     },10000)
   }
 
-  subscribePlayer(playerId: string): boolean {
+  subscribePlayer(playerId: string, pwd: string, balance: number): boolean {
     // Unique players check
     if (this.players.has(playerId)) {
       return false;
     }
+    
+    
 
     this.players.set(playerId, new Player(playerId));
 

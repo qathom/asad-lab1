@@ -138,7 +138,7 @@ function initApp() {
        PLAYER_ID = playerId;
        PLAYER_PWD = pwd;
        BALANCE = balance;
-       socket.emit('createAccount', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD, balance: BALANCE });
+       socket.emit('createAccount', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD, playerBalance: BALANCE });
     }
   });
   
