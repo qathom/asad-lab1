@@ -1,57 +1,55 @@
 import { Player } from './Player';
-const fs = require('fs');
-const md5= require('md5')
-
-
-// relative path in backend
-const DATA_URL = 'data/players.json'
-
+import * as fs  from 'fs';
+import * as md5 from 'md5';
 
 export class PlayerAuth {
+  // Relative path in backend
+  private readonly storagePath = 'data/players.json';
 
-    constructor() {
-        console.log("auth constructor")
+  findAll(): Player[] {
+    const rawdata = fs.readFileSync(this.storagePath, 'utf-8');
+    const playersJSON = JSON.parse(rawdata);
+    return playersJSON;
+  }
+
+  save(players: Player[]) {
+    const data = JSON.stringify(players.map(player => player.toJSON()));
+    fs.writeFileSync(this.storagePath, data) ;
+  }
+
+  subscribe(player: Player): boolean {
+    // Player already exists
+    const players = this.findAll();
+
+    if (players.findIndex(p => p.id === player.id) > -1) {
+      return false;
     }
 
-    getPlayers(){
+    // user doesnt exists
+    const newPlayer = new Player(
+      player.id,
+      md5(player.password),
+      player.bank,
+    );
 
-        let rawdata = fs.readFileSync(DATA_URL);
-        let playersJSON = JSON.parse(rawdata);
-        return playersJSON
+    players.push(newPlayer);
+
+    this.save(players);
+
+    return true;
+  }
+
+  login(pid: string, password:string): Player {
+    const players = this.findAll();
+    for (let idx in players) {
+      let playerJSON = players[idx]
+      const md5sum = md5(password);
+
+      if(pid == playerJSON.id && md5sum == playerJSON.password ) {
+          return new Player(pid, password, playerJSON.bank);
+      }
     }
 
-    savePlayers(players: Object){
-        let data = JSON.stringify(players);
-        fs.writeFileSync(DATA_URL, data) ;
-    }
-
-    subscribePlayer(player: Player):boolean{
-        let players = this.getPlayers()
-        for(let idx in players) {
-            let playerJSON = players[idx]
-            if(playerJSON.id == player.id) {
-                return false
-            }
-        }
-
-        // user doesnt exists
-        let newPlayerJSON = {"id": player.id, "password": md5(player.password), "bank": player.bank}
-        players.push(newPlayerJSON)
-        this.savePlayers(players)
-
-        return true;
-    }
-
-    checklogin(pid: string, password:string):Player {
-       let players = this.getPlayers()
-       for(let idx in players) {
-            let playerJSON = players[idx]
-            if(pid == playerJSON.id && md5(password) == playerJSON.password ) {
-                return new Player(pid, password, playerJSON.bank)
-            }
-        }
-
-        return null
-    }
+    return null;
+  }
 }
-  
