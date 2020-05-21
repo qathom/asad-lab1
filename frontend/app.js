@@ -1,3 +1,18 @@
+
+const STORAGE_TOKEN = 'asad_prd';
+
+function getToken() {
+  return localStorage.getItem(STORAGE_TOKEN) || null;
+}
+
+function setToken(token) {
+  localStorage.setItem(STORAGE_TOKEN, token);
+}
+
+function setSocketPayload(payload) {
+  return Object.assign(payload || {}, { token: getToken() });
+}
+
 const socket = io('http://localhost:3000');
 
 let PLAYER_ID = null;
@@ -115,7 +130,7 @@ function initApp() {
        const pwd = document.querySelector('#inputLoginPassword').value;
        PLAYER_ID = playerId;
        PLAYER_PWD = pwd;
-       socket.emit('init', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD });  
+       socket.emit('init', setSocketPayload({ playerId: PLAYER_ID, playerPassword: PLAYER_PWD }));  
     }
   });
   
@@ -137,8 +152,8 @@ function initApp() {
        const balance = document.querySelector('#inputBalance').value;
        PLAYER_ID = playerId;
        PLAYER_PWD = pwd;
-       BALANCE = balance;
-       socket.emit('createAccount', { playerId: PLAYER_ID, playerPassword: PLAYER_PWD, playerBalance: BALANCE });
+       BALANCE = parseInt(balance, 10);
+       socket.emit('createAccount', setSocketPayload({ playerId: PLAYER_ID, playerPassword: PLAYER_PWD, playerBalance: BALANCE }));
     }
   });
   
@@ -190,16 +205,27 @@ function initApp() {
 
     console.log('CELL', cell, 'BetType', betType);
 
-    socket.emit('bet', { betType: betType, cell: cell, amount: amount, playerId: PLAYER_ID })
+    socket.emit('bet', setSocketPayload({ betType: betType, cell: cell, amount: amount, playerId: PLAYER_ID }));
   });
 }
 
-// Listeners
+socket.on('unauthorized', (msg) => {
+  $('#initModal').modal('show');
+});
+
+console.log('AUTHENTICATing');
+socket.emit('authenticate', setSocketPayload());
+
+socket.on('authenticated', (data) => {
+  console.log('AUTHENTICATED', data.id);
+  PLAYER_ID = data.id;
+
+  $('#initModal').modal('hide');
+});
+
 socket.on('init', function (data) {
   const playerInput = document.querySelector('#inputLoginPlayerName');
  
-  console.log(data);
-
   if (!data.canLogin) {
     if (!playerInput.classList.contains('is-invalid')) {
       playerInput.classList.add('is-invalid');
@@ -211,6 +237,9 @@ socket.on('init', function (data) {
   if (playerInput.classList.contains('is-invalid')) {
     playerInput.classList.remove('is-invalid');
   }
+
+  // Save content
+  setToken(data.token);
 
   $('#initModal').modal('hide');
 });
