@@ -1,5 +1,5 @@
 
-const STORAGE_TOKEN = 'asad_prd';
+const STORAGE_TOKEN = 'asad_prdq';
 
 function getToken() {
   return localStorage.getItem(STORAGE_TOKEN) || null;
@@ -114,10 +114,7 @@ function playerJoin(players) {
 }
 
 function initApp() {
-  // Show the modal
-  $('#initModal').modal({ backdrop: 'static', keyboard: false });
-  $('#initModal').modal('show');
-
+  // Set modal settings
   document.querySelector('#playButton').addEventListener('click', function () {
     if(document.querySelector('#inputLoginPlayerName').value === "") {
        console.log("invalid player name");
@@ -210,6 +207,7 @@ function initApp() {
 }
 
 socket.on('unauthorized', (msg) => {
+  $('#initModal').modal({ backdrop: 'static', keyboard: false });
   $('#initModal').modal('show');
 });
 
@@ -294,9 +292,6 @@ socket.on('state', function (state) {
       break;
   }
 });
-
-
-
 
 // Init app
 initApp();
