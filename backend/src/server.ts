@@ -1,12 +1,18 @@
 import * as express from 'express';
-import * as socketio from 'socket.io';
 import * as path from 'path';
 import { Request, Response } from 'express';
 import { Controller } from './app/Controller'
-import { BetType } from './app/utils/BetType';
-import { ClientInitData,ClientAccountData,  ClientBetData } from 'types';
-import { Bet } from './app/Bet';
+import { ClientInitData,ClientAccountData,  ClientBetData, VerifyTokenData } from 'types';
 
+// Prepare env variables
+require('dotenv').config();
+
+// Throw error if secret is not set
+if (!process.env.JWT_SECRET) {
+  throw new Error('Please set JWT_SECRET in .env');
+}
+
+// Set app
 const app = express();
 const controller = new Controller()
 
@@ -32,15 +38,34 @@ app.use(express.static(path.resolve('../frontend')));
 io.on('connection', (socket: any) => {
   console.log('a user connected');
 
-  // const canBet = controller.bet(BetType.ODD,null,100,"test");
+  /**
+   * Verifies if the token is valid
+   */
+  socket.on('authenticate', (data: VerifyTokenData) => {
+    try {
+      const player = controller.verifyPlayer(data.token);
+
+      // Returns data related to the authenticated player
+      socket.emit('authenticated', player);
+
+      // Notify clients
+      io.sockets.emit('playerJoin', { 
+        players: controller.getPlayers(),
+      });
+    } catch (e) {
+      socket.emit('unauthorized');
+
+      console.error('Error while verifying user', e);
+    }
+  });
 
   socket.on('init', (data: ClientInitData) => {
-
-    const canLogin = controller.loginPlayer(data.playerId, data.playerPassword);
+    const { canLogin, token } = controller.loginPlayer(data.playerId, data.playerPassword);
 
     // Init response for target client
     socket.emit('init', { 
       canLogin,
+      token,
     });
 
     // send state to the client
@@ -74,28 +99,34 @@ io.on('connection', (socket: any) => {
   });
 
   socket.on('bet', (data: ClientBetData) => {
-    console.log(data)
-    let result:any = controller.bet(data.betType,data.cell,data.amount, data.playerId)
+    console.log('ON BET', data);
 
-    // TEST/DEBUG WINNERS
-    //let randomCell = Math.floor(Math.random() * 37)
-    //let winners = controller.computeWinners(randomCell)
-    //console.log("SelectedCell", randomCell, "winners", winners)
+    try {
+      const player = controller.verifyPlayer(data.token);
+      const result:any = controller.bet(data.betType, data.cell, data.amount, player.id)
 
-
-    io.sockets.emit('bet', {
-      bet: {
-        betType:data.betType,
-        cell:data.cell,
-        amount:data.amount,
-        player:{
-          playerId: result.player.id,
-          bank: result.player.bank,
-          currentAmountBetted: result.player.currentAmountBetted
+      // TEST/DEBUG WINNERS
+      //let randomCell = Math.floor(Math.random() * 37)
+      //let winners = controller.computeWinners(randomCell)
+      //console.log("SelectedCell", randomCell, "winners", winners)
+      io.sockets.emit('bet', {
+        bet: {
+          betType:data.betType,
+          cell:data.cell,
+          amount:data.amount,
+          player:{
+            playerId: result.player.id,
+            bank: result.player.bank,
+            currentAmountBetted: result.player.currentAmountBetted
+          },
         },
-      },
-      status: result.status,
-    });
+        status: result.status,
+      });
+    } catch (e) {
+      socket.emit('unauthorized');
+
+      console.error('Unverified player during bet');
+    }
   });
 });
 
