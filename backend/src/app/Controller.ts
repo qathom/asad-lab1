@@ -5,6 +5,7 @@ import { Bet } from './Bet';
 import { Player } from './Player';
 import { CellUtils } from './utils/CellUtils';
 import { PlayerAuth } from './PlayerAuth'
+import * as jwt from 'jsonwebtoken';
 
 export class Controller {
   board: Board;
@@ -18,6 +19,11 @@ export class Controller {
     this.board = new Board();
     this.players = new Map();
     this.playerAuth = new PlayerAuth();
+
+    // Add list of player objects returned by PlayerAuth
+    this.playerAuth.findAll().forEach((player) => {
+      this.players.set(player.id, new Player(player.id, player.password, player.bank));
+    });
   }
 
   getState() {
@@ -63,36 +69,47 @@ export class Controller {
     },10000)
   }
 
-
   subscribePlayer(playerId: string, password:string, balance: number): boolean {
-    let player: Player = new Player(playerId, password, balance)
+    const player: Player = new Player(playerId, password, balance)
+    const cansub = this.playerAuth.subscribe(player);
 
-    let cansub = this.playerAuth.subscribePlayer(player);
-
-    if(cansub) {
+    if (cansub) {
       this.players.set(playerId, player);
     }
 
     return cansub
   }
 
-  loginPlayer(pid:string, password:string):boolean{
+  loginPlayer(pid:string, password:string): { canLogin: boolean, token: string|null } {
+    const player:Player|null = this.playerAuth.login(pid, password);
 
-    let player:Player = this.playerAuth.checklogin(pid, password);
-    if( player == null) {
-      return false
+    if (player === null) {
+      return { canLogin: false, token: null };
     }
     
     this.players.set(pid, player);
-    return true
+
+    const token = jwt.sign({
+      player,
+    }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+    return { token, canLogin: true };
   }
 
+  verifyPlayer(token: string): Player {
+    try {
+      const { player } = jwt.verify(token, process.env.JWT_SECRET);
+      return player;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   getPlayers(): Player[] {
     return Array.from(this.players.values());
   }
 
-  bet(betType: BetType, cell:number, amount:number, playerId: string) : any {
+  bet(betType: BetType, cell: number, amount: number, playerId: string) : any {
     let status = false
     const player : Player = this.players.get(playerId)
     const bet : Bet = new Bet(amount, player)
