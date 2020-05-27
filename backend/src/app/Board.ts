@@ -63,6 +63,15 @@ export class Board {
         return this.colorBet[+!isRed]
     }
 
+    removeBets(playerId:String){
+        let id = this.cellBet.findIndex(bet => {bet.player.id === playerId})
+        if (id > -1) this.cellBet[id] = undefined
+        id = this.colorBet.findIndex(bet => {bet.player.id === playerId})
+        if (id > -1) this.colorBet[id] = undefined
+        id = this.oddEvenBet.findIndex(bet => {bet.player.id === playerId})
+        if (id > -1) this.oddEvenBet[id] = undefined
+    }
+
     reset(){
         this.cellBet = new Array<Bet>(37)
         this.colorBet = new Array<Bet>(2)
