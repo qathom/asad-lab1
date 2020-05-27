@@ -72,11 +72,21 @@ io.on('connection', (socket: any) => {
     socket.emit('state', controller.getState())
 
     if (canLogin) {
+
+      socket.playerId = data.playerId; // bind userid to socket
+
       // Emit to all clients
       io.sockets.emit('playerJoin', { 
         players: controller.getPlayers(),
       });
     }
+
+    // user disconnected
+    socket.on('disconnect', () => {
+      const playerId = socket.playerId
+      controller.removeBets(playerId)
+
+    });
   });
   
   socket.on('createAccount', (data: ClientAccountData) => {
@@ -89,13 +99,6 @@ io.on('connection', (socket: any) => {
 
     // send state to the client
     socket.emit('state', controller.getState())
-
-    if (canSubscribe) {
-      // Emit to all clients
-      io.sockets.emit('playerJoin', { 
-        players: controller.getPlayers(),
-      });
-    }
   });
 
   socket.on('bet', (data: ClientBetData) => {

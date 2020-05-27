@@ -105,6 +105,10 @@ export class Controller {
     }
   }
 
+  removeBets(playerId: string){
+    this.board.removeBets(playerId)
+  }
+
   getPlayers(): Player[] {
     return Array.from(this.players.values());
   }
