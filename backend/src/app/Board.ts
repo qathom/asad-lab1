@@ -64,23 +64,32 @@ export class Board {
     }
 
     removeBets(playerId:String){
-        console.log("Remove Bets")
-        let id = this.cellBet.findIndex(bet => {
-            if (bet)
-                bet.player.id === playerId
-        })
-        if (id > -1) this.cellBet[id] = undefined
-        id = this.colorBet.findIndex(bet => {
-            if (bet)
-                bet.player.id === playerId
-        })
-        if (id > -1) this.colorBet[id] = undefined
-        id = this.oddEvenBet.findIndex(bet => {
-            if (bet)
-                bet.player.id === playerId
-        })
-        if (id > -1) this.oddEvenBet[id] = undefined
-        
+        console.log("Remove Bets", playerId)
+        for (let i = 0; i < this.cellBet.length; i++){
+            if (this.cellBet[i] && this.cellBet[i].player.id === playerId)
+                this.cellBet[i] = undefined
+        }
+        // let id = this.colorBet.findIndex(bet => {
+        //     if (bet)
+        //         bet.player.id === playerId
+        //     return false
+        // })
+        // if (id > -1) this.colorBet[id] = undefined
+        for (let i = 0; i < this.colorBet.length; i++){
+            if (this.colorBet[i] && this.colorBet[i].player.id === playerId)
+                this.colorBet[i] = undefined
+        }
+        // id = this.oddEvenBet.findIndex(bet => {
+        //     if (bet != undefined)
+        //         return bet.player.id === playerId
+        //     return false
+        // })
+        // if (id > -1) this.oddEvenBet[id] = undefined
+        for (let i = 0; i < this.oddEvenBet.length; i++){
+            if (this.oddEvenBet[i] && this.oddEvenBet[i].player.id === playerId)
+                this.oddEvenBet[i] = undefined
+        }
+        console.log(this.oddEvenBet)
     }
 
     reset(){
