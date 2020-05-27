@@ -28,6 +28,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
+    "crossenv": "0.0.2-security",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.2.1",
     "socket.io": "^2.3.0"
