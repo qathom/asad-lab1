@@ -99,13 +99,6 @@ io.on('connection', (socket: any) => {
 
     // send state to the client
     socket.emit('state', controller.getState())
-
-    if (canSubscribe) {
-      // Emit to all clients
-      io.sockets.emit('playerJoin', { 
-        players: controller.getPlayers(),
-      });
-    }
   });
 
   socket.on('bet', (data: ClientBetData) => {

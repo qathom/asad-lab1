@@ -243,8 +243,11 @@ socket.on('init', function (data) {
 });
 
 socket.on('createAccount', function (data) {
-   $('#initCreateAccountModal').modal('hide');
-   console.log('DATA', data);
+  // Dismiss the registration modal
+  $('#initCreateAccountModal').modal('hide');
+  // Show the login modal
+  $('#initModal').modal('show');
+  console.log('DATA', data);
 });
 
 socket.on('playerJoin', function (data) {
