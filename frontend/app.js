@@ -64,7 +64,7 @@ function setPlayers(players) {
   playerContainer.appendChild(ul);
 }
 
-function setPlayerBank(playerId, bank, betsAmount, winner) {
+function setPlayerBank(playerId, bank, betsAmount=0, winner) {
   console.log('PLAYER ID', playerId);
   const playerEl = document.querySelector(`#players [data-id="${playerId}"]`);
   playerEl.querySelector('.player-info').innerHTML = playerId + ' ' + (bank-betsAmount);
