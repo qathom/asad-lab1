@@ -13,7 +13,7 @@ export class PlayerAuth {
   }
 
   save(players: Player[]) {
-    const data = JSON.stringify(players.map(player => player.toJSON()));
+    const data = JSON.stringify(players);
     fs.writeFileSync(this.storagePath, data) ;
   }
 

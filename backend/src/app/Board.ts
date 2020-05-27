@@ -64,6 +64,7 @@ export class Board {
     }
 
     removeBets(playerId:String){
+        console.log("Remove Bets")
         let id = this.cellBet.findIndex(bet => {
             if (bet)
                 bet.player.id === playerId
@@ -79,7 +80,7 @@ export class Board {
                 bet.player.id === playerId
         })
         if (id > -1) this.oddEvenBet[id] = undefined
-        console.log("Remove Bets")
+        
     }
 
     reset(){
