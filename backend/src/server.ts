@@ -72,11 +72,22 @@ io.on('connection', (socket: any) => {
     socket.emit('state', controller.getState())
 
     if (canLogin) {
+
+      socket.playerId = data.playerId; // bind userid to socket
+
       // Emit to all clients
       io.sockets.emit('playerJoin', { 
         players: controller.getPlayers(),
       });
     }
+
+    // user disconnected
+    socket.on('disconnect', () => {
+      const playerId = socket.playerId
+
+      // TODO : remove bets
+
+    });
   });
   
   socket.on('createAccount', (data: ClientAccountData) => {
