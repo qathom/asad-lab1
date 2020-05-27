@@ -255,6 +255,8 @@ socket.on('playerJoin', function (data) {
 });
 
 socket.on('number', function (randomNumber) {
+  $('#randNum')[0].innerText = randomNumber
+  $('.toast').toast('show')
   console.log('RANDOM NUMBER', randomNumber);
 });
 
