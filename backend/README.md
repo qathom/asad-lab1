@@ -6,6 +6,8 @@
 
 ```bash
 $ npm install
+$ cp .env.example .env
+# Add the JWT_SECRET variable in .env
 ```
 
 ## Usage
