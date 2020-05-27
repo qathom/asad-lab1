@@ -84,8 +84,7 @@ io.on('connection', (socket: any) => {
     // user disconnected
     socket.on('disconnect', () => {
       const playerId = socket.playerId
-
-      // TODO : remove bets
+      controller.removeBets(playerId)
 
     });
   });
