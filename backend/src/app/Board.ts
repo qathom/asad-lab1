@@ -64,12 +64,22 @@ export class Board {
     }
 
     removeBets(playerId:String){
-        let id = this.cellBet.findIndex(bet => {bet.player.id === playerId})
+        let id = this.cellBet.findIndex(bet => {
+            if (bet)
+                bet.player.id === playerId
+        })
         if (id > -1) this.cellBet[id] = undefined
-        id = this.colorBet.findIndex(bet => {bet.player.id === playerId})
+        id = this.colorBet.findIndex(bet => {
+            if (bet)
+                bet.player.id === playerId
+        })
         if (id > -1) this.colorBet[id] = undefined
-        id = this.oddEvenBet.findIndex(bet => {bet.player.id === playerId})
+        id = this.oddEvenBet.findIndex(bet => {
+            if (bet)
+                bet.player.id === playerId
+        })
         if (id > -1) this.oddEvenBet[id] = undefined
+        console.log("Remove Bets")
     }
 
     reset(){
