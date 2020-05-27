@@ -64,6 +64,8 @@ export class Board {
     }
 
     removeBets(playerId:String){
+        console.log(playerId, "bets removed")
+
         let id = this.cellBet.findIndex(bet => {bet.player.id === playerId})
         if (id > -1) this.cellBet[id] = undefined
         id = this.colorBet.findIndex(bet => {bet.player.id === playerId})
