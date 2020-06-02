@@ -13,10 +13,11 @@ if (!process.env.JWT_SECRET) {
 }
 
 // Set app
+const port = process.env.NODE_PORT ? process.env.NODE_PORT : 3000;
 const app = express();
 const controller = new Controller()
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', port);
 
 let http = require('http').Server(app);
 
@@ -32,7 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(express.static(path.resolve('../frontend')));
 
 /*
- * Whenever a user connects on port 3000 via
+ * Whenever a user connects on port via
  * a websocket, log that a user has connected
  */
 io.on('connection', (socket: any) => {
@@ -137,7 +138,7 @@ io.on('connection', (socket: any) => {
 controller.setIO(io)
 controller.openTable()
 
-// Listen to port 3000
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+// Listen to port
+http.listen(port, () => {
+  console.log(`listening on *:${port}`);
 });
