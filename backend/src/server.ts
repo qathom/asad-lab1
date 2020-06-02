@@ -3,6 +3,7 @@ import * as path from 'path';
 import { Request, Response } from 'express';
 import { Controller } from './app/Controller'
 import { ClientInitData,ClientAccountData,  ClientBetData, VerifyTokenData } from 'types';
+import * as serverless from 'serverless-http';
 
 // Prepare env variables
 require('dotenv').config();
@@ -133,14 +134,13 @@ io.on('connection', (socket: any) => {
   });
 });
 
-
-// start controller
+// Start controller
 controller.setIO(io)
 controller.openTable()
 
-
-
 // Listen to port 3000
-const server = http.listen(3000, () => {
+http.listen(3000, () => {
   console.log('listening on *:3000');
 });
+
+module.exports.handler = serverless(app);
