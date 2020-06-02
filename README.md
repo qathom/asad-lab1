@@ -1,4 +1,4 @@
-# asad-lab1
+# asad-project
 
 > ASAD project (Roulette)
 
